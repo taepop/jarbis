@@ -1,16 +1,30 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz_data;
 
+import '../../main.dart';
 import '../models/alarm_model.dart';
 import 'notification_service.dart';
 
 class AlarmService {
   static const String _alarmsKey = 'jarvis_alarms';
   static const String _portName = 'alarm_port';
+  static bool _tzInitialized = false;
+
+  /// Initialize timezone data for iOS scheduling
+  static Future<void> initializeTimezone() async {
+    if (!_tzInitialized) {
+      tz_data.initializeTimeZones();
+      _tzInitialized = true;
+    }
+  }
 
   // Save alarm to storage
   static Future<void> saveAlarm(AlarmModel alarm) async {
@@ -71,8 +85,10 @@ class AlarmService {
     }
   }
 
-  // Schedule alarm using Android Alarm Manager
+  // Schedule alarm using Android Alarm Manager or iOS notifications
   static Future<void> scheduleAlarm(AlarmModel alarm) async {
+    await initializeTimezone();
+    
     final now = DateTime.now();
     var scheduledTime = DateTime(
       now.year,
@@ -99,21 +115,60 @@ class AlarmService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('pending_alarm_${alarm.id}', jsonEncode(alarm.toJson()));
 
-    await AndroidAlarmManager.oneShotAt(
-      scheduledTime,
+    if (Platform.isAndroid) {
+      // Use Android Alarm Manager for precise timing
+      await AndroidAlarmManager.oneShotAt(
+        scheduledTime,
+        alarm.id,
+        alarmCallback,
+        exact: true,
+        wakeup: true,
+        alarmClock: true,
+        rescheduleOnReboot: true,
+      );
+    } else if (Platform.isIOS) {
+      // Use flutter_local_notifications for iOS scheduling
+      await _scheduleIOSAlarm(alarm, scheduledTime);
+    }
+  }
+
+  /// Schedule alarm notification on iOS
+  static Future<void> _scheduleIOSAlarm(AlarmModel alarm, DateTime scheduledTime) async {
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+      interruptionLevel: InterruptionLevel.timeSensitive,
+      categoryIdentifier: 'alarm_category',
+    );
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      iOS: iosDetails,
+    );
+
+    final tzScheduledTime = tz.TZDateTime.from(scheduledTime, tz.local);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       alarm.id,
-      alarmCallback,
-      exact: true,
-      wakeup: true,
-      alarmClock: true,
-      rescheduleOnReboot: true,
+      'J.A.R.V.I.S ALARM',
+      alarm.label.isNotEmpty ? alarm.label : 'Good morning, Sir. Time to wake up.',
+      tzScheduledTime,
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      payload: jsonEncode(alarm.toJson()),
+      matchDateTimeComponents: alarm.repeatDays.isNotEmpty ? DateTimeComponents.dayOfWeekAndTime : null,
     );
   }
 
   // Cancel scheduled alarm
   static Future<void> cancelAlarm(int alarmId) async {
-    await AndroidAlarmManager.cancel(alarmId);
+    if (Platform.isAndroid) {
+      await AndroidAlarmManager.cancel(alarmId);
+    }
+    // Cancel notification on both platforms
     await NotificationService.cancelNotification(alarmId);
+    await flutterLocalNotificationsPlugin.cancel(alarmId);
   }
 
   // Snooze alarm
@@ -123,14 +178,18 @@ class AlarmService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('pending_alarm_${alarm.id}', jsonEncode(alarm.toJson()));
 
-    await AndroidAlarmManager.oneShotAt(
-      snoozeTime,
-      alarm.id,
-      alarmCallback,
-      exact: true,
-      wakeup: true,
-      alarmClock: true,
-    );
+    if (Platform.isAndroid) {
+      await AndroidAlarmManager.oneShotAt(
+        snoozeTime,
+        alarm.id,
+        alarmCallback,
+        exact: true,
+        wakeup: true,
+        alarmClock: true,
+      );
+    } else if (Platform.isIOS) {
+      await _scheduleIOSAlarm(alarm, snoozeTime);
+    }
   }
 
   // Re-schedule repeating alarm for next occurrence

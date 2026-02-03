@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -57,11 +58,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _requestPermissions() async {
-    await [
+    // Request common permissions
+    final permissions = <Permission>[
       Permission.notification,
-      Permission.scheduleExactAlarm,
       Permission.location,
-    ].request();
+    ];
+    
+    // Android-specific permissions
+    if (Platform.isAndroid) {
+      permissions.add(Permission.scheduleExactAlarm);
+    }
+    
+    await permissions.request();
   }
 
   Future<void> _loadAlarms() async {

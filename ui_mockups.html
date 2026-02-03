@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S Alarm App - UI Mockups</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00D4FF;
+            --secondary: #FF6B00;
+            --tertiary: #00FF88;
+            --background: #0A0E17;
+            --surface: #111827;
+            --surface-light: #1F2937;
+            --text-primary: #FFFFFF;
+            --text-secondary: #7DD3FC;
+            --text-muted: #64748B;
+            --error: #FF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #1a1a2e;
+            color: white;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        .mockups-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .mockup-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mockup-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .phone-frame {
+            width: 320px;
+            height: 640px;
+            background: var(--background);
+            border-radius: 40px;
+            border: 3px solid #333;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        inset 0 0 60px rgba(0, 212, 255, 0.03);
+        }
+
+        .phone-notch {
+            width: 120px;
+            height: 25px;
+            background: #000;
+            border-radius: 0 0 15px 15px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .screen {
+            height: 100%;
+            padding: 10px 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        .glow-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at top center, rgba(0, 212, 255, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Home Screen Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .jarvis-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .system-status {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .settings-icon {
+            color: var(--primary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .time-display {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .big-time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+            letter-spacing: 4px;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+            50% { text-shadow: 0 0 40px rgba(0, 212, 255, 0.6); }
+        }
+
+        .date-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 3px;
+            margin-top: 8px;
+        }
+
+        /* Alarm Cards */
+        .alarm-card {
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.15); }
+            50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.25); }
+        }
+
+        .alarm-card.disabled {
+            border-color: var(--text-muted);
+            box-shadow: none;
+            animation: none;
+        }
+
+        .alarm-card-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alarm-time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .alarm-period {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .alarm-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .alarm-features {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .feature-badge {
+            font-size: 9px;
+            padding: 3px 8px;
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--primary);
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: var(--surface-light);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            width: 22px;
+            height: 22px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            left: 25px;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* FAB Button */
+        .fab {
+            position: absolute;
+            bottom: 25px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--background);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Create Alarm Screen */
+        .app-bar {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            color: var(--primary);
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .app-bar-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        .time-picker {
+            text-align: center;
+            padding: 20px;
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+        }
+
+        .section-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .time-wheels {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-wheel {
+            background: var(--surface-light);
+            border-radius: 12px;
+            padding: 8px 0;
+            width: 70px;
+        }
+
+        .wheel-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            color: var(--primary);
+            padding: 5px 0;
+        }
+
+        .wheel-adjacent {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            color: var(--text-muted);
+            padding: 3px 0;
+        }
+
+        .time-colon {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            color: var(--primary);
+        }
+
+        .settings-card {
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .input-field {
+            width: 100%;
+            background: var(--surface-light);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .days-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .day-chip {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface-light);
+            border: 1px solid var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .day-chip.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .briefing-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .briefing-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .briefing-icon {
+            color: var(--primary);
+        }
+
+        .save-btn {
+            width: 100%;
+            background: var(--primary);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--background);
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+            margin-top: 10px;
+        }
+
+        /* Alarm Ring Screen */
+        .ring-screen {
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.15) 0%, var(--background) 70%);
+        }
+
+        .ring-time {
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        .ring-big-time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+            animation: pulse-glow 1s ease-in-out infinite;
+        }
+
+        .ring-date {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        .arc-reactor {
+            width: 180px;
+            height: 180px;
+            margin: 50px auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reactor-outer {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4),
+                        inset 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .reactor-outer::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .reactor-middle {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border: 2px solid rgba(0, 212, 255, 0.5);
+            border-radius: 50%;
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        .reactor-inner {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, var(--primary) 0%, rgba(0, 212, 255, 0.3) 50%, transparent 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse-reactor 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse-reactor {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .reactor-icon {
+            font-size: 32px;
+            color: var(--background);
+        }
+
+        .briefing-status {
+            text-align: center;
+            padding: 15px;
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            margin: 0 20px 20px;
+        }
+
+        .briefing-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .briefing-text {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .ring-actions {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .ring-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .dismiss-btn {
+            background: var(--error);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+        }
+
+        .snooze-btn {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .ring-btn-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Settings Screen */
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--tertiary);
+            box-shadow: 0 0 8px var(--tertiary);
+        }
+
+        .status-dot.warning {
+            background: var(--secondary);
+            box-shadow: 0 0 8px var(--secondary);
+        }
+
+        .api-input {
+            width: 100%;
+            background: var(--surface-light);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-family: monospace;
+            margin-top: 12px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .outline-btn {
+            flex: 1;
+            background: transparent;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .filled-btn {
+            flex: 1;
+            background: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--background);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .about-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .about-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .about-value {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .empty-icon {
+            font-size: 60px;
+            color: rgba(0, 212, 255, 0.2);
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .empty-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .scroll-area {
+            height: 280px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>J.A.R.V.I.S ALARM APP</h1>
+    <p class="subtitle">UI MOCKUPS • TONY STANK PROJECT</p>
+
+    <div class="mockups-container">
+        <!-- Home Screen -->
+        <div class="mockup-wrapper">
+            <div class="mockup-title">HOME SCREEN</div>
+            <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="grid-bg"></div>
+                    <div class="glow-overlay"></div>
+                    
+                    <div class="header">
+                        <div>
+                            <div class="jarvis-title">J.A.R.V.I.S</div>
+                            <div class="system-status">ALARM SYSTEM ONLINE</div>
+                        </div>
+                        <div class="settings-icon">⚙</div>
+                    </div>
+
+                    <div class="time-display">
+                        <div class="big-time">07:30</div>
+                        <div class="date-display">TUESDAY, FEB 3</div>
+                    </div>
+
+                    <div class="scroll-area">
+                        <div class="alarm-card">
+                            <div class="alarm-card-content">
+                                <div>
+                                    <div class="alarm-time">7:30 <span class="alarm-period">AM</span></div>
+                                    <div class="alarm-label">Wake up for work</div>
+                                    <div class="alarm-features">
+                                        <span class="feature-badge">☀ WEATHER</span>
+                                        <span class="feature-badge">📰 NEWS</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                        </div>
+
+                        <div class="alarm-card">
+                            <div class="alarm-card-content">
+                                <div>
+                                    <div class="alarm-time">9:00 <span class="alarm-period">AM</span></div>
+                                    <div class="alarm-label">Weekend alarm</div>
+                                    <div class="alarm-features">
+                                        <span class="feature-badge">☀ WEATHER</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                        </div>
+
+                        <div class="alarm-card disabled">
+                            <div class="alarm-card-content">
+                                <div>
+                                    <div class="alarm-time">6:00 <span class="alarm-period">AM</span></div>
+                                    <div class="alarm-label">Gym session</div>
+                                    <div class="alarm-features">
+                                        <span class="feature-badge" style="opacity: 0.5">☀ WEATHER</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fab">+</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Alarm Screen -->
+        <div class="mockup-wrapper">
+            <div class="mockup-title">CREATE ALARM</div>
+            <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="grid-bg"></div>
+                    <div class="glow-overlay"></div>
+
+                    <div class="app-bar">
+                        <span class="back-btn">✕</span>
+                        <span class="app-bar-title">CREATE ALARM</span>
+                    </div>
+
+                    <div style="height: 480px; overflow-y: auto; position: relative; z-index: 1;">
+                        <div class="time-picker">
+                            <div class="section-label">SET TIME</div>
+                            <div class="time-wheels">
+                                <div class="time-wheel">
+                                    <div class="wheel-adjacent">06</div>
+                                    <div class="wheel-value">07</div>
+                                    <div class="wheel-adjacent">08</div>
+                                </div>
+                                <span class="time-colon">:</span>
+                                <div class="time-wheel">
+                                    <div class="wheel-adjacent">29</div>
+                                    <div class="wheel-value">30</div>
+                                    <div class="wheel-adjacent">31</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="section-label">ALARM LABEL</div>
+                            <input type="text" class="input-field" placeholder="Wake up for work" value="Wake up for work">
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="section-label">REPEAT</div>
+                            <div class="days-row">
+                                <div class="day-chip active">M</div>
+                                <div class="day-chip active">T</div>
+                                <div class="day-chip active">W</div>
+                                <div class="day-chip active">T</div>
+                                <div class="day-chip active">F</div>
+                                <div class="day-chip">S</div>
+                                <div class="day-chip">S</div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="section-label">MORNING BRIEFING</div>
+                            <div class="briefing-row">
+                                <span class="briefing-label">
+                                    <span class="briefing-icon">☀</span> Weather Update
+                                </span>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="briefing-row">
+                                <span class="briefing-label">
+                                    <span class="briefing-icon">📰</span> News Headlines
+                                </span>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                        </div>
+
+                        <button class="save-btn">💾 SAVE ALARM</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alarm Ring Screen -->
+        <div class="mockup-wrapper">
+            <div class="mockup-title">ALARM RINGING</div>
+            <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="screen ring-screen">
+                    <div class="grid-bg"></div>
+
+                    <div class="ring-time">
+                        <div class="ring-big-time">07:30</div>
+                        <div class="ring-date">TUESDAY, FEBRUARY 3</div>
+                    </div>
+
+                    <div class="arc-reactor">
+                        <div class="reactor-outer"></div>
+                        <div class="reactor-middle"></div>
+                        <div class="reactor-inner">
+                            <span class="reactor-icon">🔔</span>
+                        </div>
+                    </div>
+
+                    <div class="briefing-status">
+                        <div class="briefing-title">☀ WEATHER BRIEFING</div>
+                        <div class="briefing-text">72°F • Partly Cloudy • Perfect day ahead</div>
+                        <div style="height: 10px"></div>
+                        <div class="briefing-title">📰 NEWS BRIEFING</div>
+                        <div class="briefing-text">Loading AI-powered news summary...</div>
+                    </div>
+
+                    <div class="ring-actions">
+                        <div class="ring-btn snooze-btn">
+                            <span class="ring-btn-icon">💤</span>
+                            SNOOZE
+                        </div>
+                        <div class="ring-btn dismiss-btn">
+                            <span class="ring-btn-icon">✕</span>
+                            DISMISS
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div class="mockup-wrapper">
+            <div class="mockup-title">SETTINGS</div>
+            <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="grid-bg"></div>
+                    <div class="glow-overlay"></div>
+
+                    <div class="app-bar">
+                        <span class="back-btn">←</span>
+                        <span class="app-bar-title">SETTINGS</span>
+                    </div>
+
+                    <div style="height: 480px; overflow-y: auto; position: relative; z-index: 1;">
+                        <div class="settings-card" style="border-color: rgba(0, 255, 136, 0.5); box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);">
+                            <div class="api-status">
+                                <div class="status-dot"></div>
+                                <span class="section-label" style="margin: 0;">GEMINI API KEY</span>
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin: 8px 0;">
+                                API key is configured. AI-powered news briefings are enabled.
+                            </div>
+                            <input type="password" class="api-input" value="AIzaSy...xxxxx">
+                            <div class="btn-row">
+                                <button class="filled-btn">💾 SAVE KEY</button>
+                                <button class="outline-btn">🔗 GET KEY</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="section-label">DEFAULT ALARM SOUND</div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                <span style="color: var(--primary);">🔊</span>
+                                <span style="color: var(--text-secondary); font-size: 13px;">Classic Digital</span>
+                                <span style="margin-left: auto; color: var(--primary);">▶</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="section-label">ABOUT</div>
+                            <div class="about-item">
+                                <span class="about-label">Version</span>
+                                <span class="about-value">1.0.0</span>
+                            </div>
+                            <div class="about-item">
+                                <span class="about-label">Developer</span>
+                                <span class="about-value">Tony Stank</span>
+                            </div>
+                            <div class="about-item" style="border: none;">
+                                <span class="about-label">Powered by</span>
+                                <span class="about-value">Gemini AI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="mockup-wrapper">
+            <div class="mockup-title">EMPTY STATE</div>
+            <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="grid-bg"></div>
+                    <div class="glow-overlay"></div>
+                    
+                    <div class="header">
+                        <div>
+                            <div class="jarvis-title">J.A.R.V.I.S</div>
+                            <div class="system-status">ALARM SYSTEM ONLINE</div>
+                        </div>
+                        <div class="settings-icon">⚙</div>
+                    </div>
+
+                    <div class="time-display">
+                        <div class="big-time">07:30</div>
+                        <div class="date-display">TUESDAY, FEB 3</div>
+                    </div>
+
+                    <div class="empty-state">
+                        <div class="empty-icon">⏰</div>
+                        <div class="empty-title">NO ALARMS CONFIGURED</div>
+                        <div class="empty-subtitle">Tap + to create your first alarm</div>
+                    </div>
+
+                    <div class="fab">+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

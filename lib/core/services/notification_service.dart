@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,8 +18,20 @@ class NotificationService {
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
+    // iOS initialization settings
+    const DarwinInitializationSettings iosSettings = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      requestCriticalPermission: true, // For alarm sounds even in silent mode
+      defaultPresentAlert: true,
+      defaultPresentBadge: true,
+      defaultPresentSound: true,
+    );
+
     const InitializationSettings initSettings = InitializationSettings(
       android: androidSettings,
+      iOS: iosSettings,
     );
 
     await plugin.initialize(
@@ -27,8 +40,17 @@ class NotificationService {
       onDidReceiveBackgroundNotificationResponse: _onBackgroundNotification,
     );
 
-    // Create notification channel
-    await _createNotificationChannel(plugin);
+    // Create notification channel (Android only)
+    if (Platform.isAndroid) {
+      await _createNotificationChannel(plugin);
+    }
+    
+    // Request iOS permissions
+    if (Platform.isIOS) {
+      await plugin
+          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(alert: true, badge: true, sound: true, critical: true);
+    }
   }
 
   static Future<void> _createNotificationChannel(
@@ -95,8 +117,18 @@ class NotificationService {
       ],
     );
 
+    // iOS notification details
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+      interruptionLevel: InterruptionLevel.timeSensitive,
+      categoryIdentifier: 'alarm_category',
+    );
+
     const NotificationDetails notificationDetails = NotificationDetails(
       android: androidDetails,
+      iOS: iosDetails,
     );
 
     await flutterLocalNotificationsPlugin.show(

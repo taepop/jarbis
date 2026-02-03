@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -31,7 +33,14 @@ void main() async {
 
   // Initialize services
   await NotificationService.initialize(flutterLocalNotificationsPlugin);
-  await AndroidAlarmManager.initialize();
+  
+  // Initialize timezone for iOS alarm scheduling
+  await AlarmService.initializeTimezone();
+  
+  // Initialize Android Alarm Manager (Android only)
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
 
   runApp(const JarvisAlarmApp());
 }
