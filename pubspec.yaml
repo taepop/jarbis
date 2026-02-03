@@ -1,0 +1,64 @@
+name: jarvis_alarm
+description: Iron Man JARVIS-style alarm app with weather and news briefing
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  
+  # Alarm & Notifications
+  android_alarm_manager_plus: ^4.0.4
+  flutter_local_notifications: ^17.2.4
+  permission_handler: ^11.3.1
+  
+  # Audio
+  just_audio: ^0.9.40
+  file_picker: ^8.1.2
+  
+  # Text-to-Speech
+  flutter_tts: ^4.0.2
+  
+  # Networking & Data
+  http: ^1.2.2
+  webfeed: ^0.9.0
+  xml: ^6.5.0
+  
+  # Storage
+  shared_preferences: ^2.3.2
+  path_provider: ^2.1.4
+  
+  # Location (for weather)
+  geolocator: ^12.0.0
+  geocoding: ^3.0.0
+  
+  # URL Launcher
+  url_launcher: ^6.3.0
+  
+  # UI & Animations
+  flutter_animate: ^4.5.0
+  google_fonts: ^6.2.1
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/sounds/
+    - assets/images/
+
+  fonts:
+    - family: Orbitron
+      fonts:
+        - asset: assets/fonts/Orbitron-Regular.ttf
+        - asset: assets/fonts/Orbitron-Bold.ttf
+          weight: 700
